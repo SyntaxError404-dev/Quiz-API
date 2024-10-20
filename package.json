@@ -4,7 +4,7 @@
   "description": "A simple quiz server fetching data from a GitHub repository.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
