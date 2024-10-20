@@ -7,16 +7,27 @@ const port = 4001;
 app.use(cors());
 
 const quizUrl = 'https://raw.githubusercontent.com/SyntaxError404-dev/Quiz-Json-/main/quiz.json';
+let quizData = [];
 
-app.get('/quiz', async (req, res) => {
+const fetchQuizData = async () => {
   try {
     const response = await axios.get(quizUrl);
-    const quizData = response.data;
-    res.status(200).send(quizData);
+    quizData = response.data;
   } catch (error) {
-    res.status(500).send('Error fetching quiz data');
+    console.error('Error fetching quiz data:', error);
   }
+};
+
+app.get('/quiz', (req, res) => {
+  if (quizData.length === 0) {
+    return res.status(500).send('Quiz data is not available');
+  }
+
+  const randomQuestion = quizData[Math.floor(Math.random() * quizData.length)];
+  res.status(200).send(randomQuestion);
 });
+
+fetchQuizData();
 
 app.listen(port, () => {
   console.log(`Quiz server running at http://localhost:${port}`);
